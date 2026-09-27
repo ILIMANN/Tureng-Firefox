@@ -92,3 +92,49 @@ table tbody a:hover {
 .search_results {
   width: 450px;
 }
+
+.term-description-box {
+  margin: 6px 10px 10px 10px;
+  padding: 8px 12px;
+  background-color: #f8f9fa;
+  border-left: 3px solid #bd1e2c;
+  border-radius: 4px;
+  font-size: small;
+}
+
+.term-description-box dl {
+  margin-bottom: 0;
+}
+
+.term-description-box .td-field {
+  margin-bottom: 4px;
+}
+
+.term-description-box .td-field dt {
+  display: inline;
+  font-weight: 600;
+  margin-right: 4px;
+}
+
+.term-description-box .td-field dd {
+  display: inline;
+  margin-bottom: 0;
+}
+
+.term-description-box .td-field a {
+  color: #bd1e2c;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.term-description-box .td-field a:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.term-description-box .td-definition dd {
+  margin-bottom: 0;
+  color: #495057;
+  line-height: 1.4;
+}
+

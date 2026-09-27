@@ -177,6 +177,78 @@ function createTranslationTable(tableElement) {
   return newTable;
 }
 
+function createSummaryBox(sectionElement) {
+  const tdField = sectionElement.querySelector(".td-field");
+  const tdDefinition = sectionElement.querySelector(".td-definition");
+
+  if (!tdField && !tdDefinition) return null;
+
+  const summarySection = document.createElement("section");
+  summarySection.className = "term-description-box";
+
+  const dl = document.createElement("dl");
+
+  if (tdField) {
+    const fieldDiv = document.createElement("div");
+    fieldDiv.className = "td-field";
+
+    const dtText = tdField.querySelector("dt")?.textContent.trim();
+    if (dtText) {
+      const dt = document.createElement("dt");
+      dt.textContent = cleanAndDecode(dtText);
+      fieldDiv.appendChild(dt);
+    }
+
+    const ddEl = tdField.querySelector("dd");
+    if (ddEl) {
+      const dd = document.createElement("dd");
+      const links = ddEl.querySelectorAll("a");
+
+      if (links.length > 0) {
+        links.forEach((a, index) => {
+          const term = cleanAndDecode(a.textContent.trim());
+          const link = document.createElement("a");
+          link.href = "#";
+          link.dataset.href = term;
+          link.textContent = term;
+          link.addEventListener("click", (e) => {
+            e.preventDefault();
+            tureng(term);
+          });
+          dd.appendChild(link);
+
+          if (index < links.length - 1) {
+            dd.appendChild(document.createTextNode(", "));
+          }
+        });
+      } else {
+        dd.textContent = cleanAndDecode(ddEl.textContent.trim());
+      }
+
+      fieldDiv.appendChild(dd);
+    }
+
+    dl.appendChild(fieldDiv);
+  }
+
+  if (tdDefinition) {
+    const defText = tdDefinition.querySelector("dd")?.textContent.trim();
+    if (defText) {
+      const defDiv = document.createElement("div");
+      defDiv.className = "td-definition";
+
+      const dd = document.createElement("dd");
+      dd.textContent = cleanAndDecode(defText);
+
+      defDiv.appendChild(dd);
+      dl.appendChild(defDiv);
+    }
+  }
+
+  summarySection.appendChild(dl);
+  return summarySection;
+}
+
 function notFound(str) {
   document.getElementById("content").appendChild(noResultContent(str));
   document.getElementById("loading").style.display = "none";
@@ -214,6 +286,7 @@ function tureng(str) {
     }
 
     const doc = parser.parseFromString(response.html, "text/html");
+    const descriptionSection = doc.querySelector("section.term-description-box");
     const checkSearchResults = doc.querySelectorAll(".searchResultsTable");
     const suggestionList = doc.querySelectorAll("ul.suggestion-list li");
 
@@ -223,6 +296,13 @@ function tureng(str) {
       contentEl.appendChild(suggestedQueries(str, suggestionList));
       document.getElementById("voice-tts").style.display = "none";
     } else if (checkSearchResults.length > 0) {
+      if (descriptionSection) {
+        const summaryBox = createSummaryBox(descriptionSection);
+        if (summaryBox) {
+          contentEl.appendChild(summaryBox);
+        }
+      }
+
       checkSearchResults.forEach((table) => {
         const newTable = createTranslationTable(table);
         contentEl.appendChild(newTable);
