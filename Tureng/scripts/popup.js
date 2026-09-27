@@ -256,7 +256,6 @@ function notFound(str) {
 }
 
 function resetContentElement() {
-  document.getElementById("content").textContent = "";
   document.getElementById("content").replaceChildren();
 }
 
@@ -334,10 +333,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById("tureng").addEventListener("click", () => {
     tureng(document.getElementById("search-input").value);
-  });
-
-  document.querySelectorAll('[data-toggle="tooltip"]').forEach((el) => {
-    new bootstrap.Tooltip(el);
   });
 });
 

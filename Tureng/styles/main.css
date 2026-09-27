@@ -59,15 +59,6 @@ table tbody th {
   opacity: 0.7;
 }
 
-.coming-soon {
-  display: none;
-}
-
-.audio:hover,
-#difficultyIndex:hover {
-  cursor: pointer;
-}
-
 table tbody a:hover {
   cursor: pointer;
 }
