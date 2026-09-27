@@ -5,7 +5,8 @@ function newTab(info, tab) {
   if (menuItemId === "tureng-text-search") {
     browser.tabs.create({
       url:
-        "https://tureng.com/tr/turkce-ingilizce/" + info.selectionText.trim(),
+        "https://tureng.com/tr/turkce-ingilizce/" +
+        encodeURIComponent(info.selectionText.trim()),
     });
   }
 }

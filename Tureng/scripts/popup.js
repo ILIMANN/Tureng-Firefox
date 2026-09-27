@@ -409,9 +409,10 @@ document.getElementById("flag-au").addEventListener("click", () => {
 });
 
 document.getElementById("tureng-logo").addEventListener("click", () => {
-  chrome.tabs.create({
+  const query = document.getElementById("search-input").value.trim();
+  browser.tabs.create({
     url:
-      "http://tureng.com/tr/turkce-ingilizce/" +
-      document.getElementById("search-input").value,
+      "https://tureng.com/tr/turkce-ingilizce/" +
+      encodeURIComponent(query),
   });
 });
