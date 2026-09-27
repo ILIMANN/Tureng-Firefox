@@ -369,18 +369,30 @@ window.onload = async () => {
 
 // TTS
 const playPronunciation = async (text, lang) => {
-  const url = `https://translate.google.com/translate_tts?client=tw-ob&q=${encodeURIComponent(
-    text
-  )}&tl=${lang}`;
-  const audio = new Audio(url);
-  audio.crossOrigin = "anonymous";
-  audio.load();
+  const trimmed = text.trim();
+  if (!trimmed) return;
 
-  await browser.permissions.request({
-    origins: ["https://translate.google.com/*"],
-  });
+  try {
+    const response = await browser.runtime.sendMessage({
+      type: "TURENG_TTS",
+      text: trimmed,
+      lang,
+    });
 
-  await audio.play().catch((e) => log.error(logDir, "playAudio()", e, url));
+    if (!response || !response.ok || !response.buffer) return;
+
+    const blob = new Blob([response.buffer], { type: "audio/mpeg" });
+    const audioUrl = URL.createObjectURL(blob);
+    const audio = new Audio(audioUrl);
+
+    audio.addEventListener("ended", () => URL.revokeObjectURL(audioUrl), {
+      once: true,
+    });
+
+    await audio.play();
+  } catch (e) {
+    console.error("playPronunciation()", e);
+  }
 };
 
 document.getElementById("flag-tr").addEventListener("click", () => {

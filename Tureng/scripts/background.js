@@ -39,4 +39,21 @@ browser.runtime.onMessage.addListener((message) => {
         error: error.message,
       }));
   }
+
+  if (message?.type === "TURENG_TTS") {
+    const url = `https://translate.google.com/translate_tts?client=tw-ob&ie=UTF-8&q=${encodeURIComponent(
+      message.text.trim()
+    )}&tl=${encodeURIComponent(message.lang)}`;
+
+    return fetch(url, { credentials: "omit" })
+      .then(async (response) => ({
+        ok: response.ok,
+        status: response.status,
+        buffer: response.ok ? await response.arrayBuffer() : null,
+      }))
+      .catch((error) => ({
+        ok: false,
+        error: error.message,
+      }));
+  }
 });
