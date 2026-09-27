@@ -21,3 +21,22 @@ browser.contextMenus.create({
 //This tells the context menu what function to run when the option is selected
 
 browser.contextMenus.onClicked.addListener(newTab);
+
+browser.runtime.onMessage.addListener((message) => {
+  if (message?.type === "TURENG_SEARCH") {
+    const url =
+      "https://tureng.com/tr/turkce-ingilizce/" +
+      encodeURIComponent(message.query.trim());
+
+    return fetch(url)
+      .then(async (response) => ({
+        ok: response.ok,
+        status: response.status,
+        html: await response.text(),
+      }))
+      .catch((error) => ({
+        ok: false,
+        error: error.message,
+      }));
+  }
+});

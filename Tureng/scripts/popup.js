@@ -205,36 +205,40 @@ function resetSearchUI(str) {
 function tureng(str) {
   str = resetSearchUI(str);
 
-  fetch("https://tureng.com/tr/turkce-ingilizce/" + str)
-    .then((response) => {
-      if (!response.ok) notFound(str);
-      return response.text();
-    })
-    .then((data) => {
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(data, "text/html");
-      const checkSearchResults = doc.querySelectorAll(".searchResultsTable");
-      const suggestionList = doc.querySelectorAll("ul.suggestion-list li");
+  browser.runtime
+  .sendMessage({ type: "TURENG_SEARCH", query: str })
+  .then((response) => {
+    if (!response || !response.ok) {
+      notFound(str);
+      return;
+    }
 
-      const contentEl = document.getElementById("content");
+    const doc = parser.parseFromString(response.html, "text/html");
+    const checkSearchResults = doc.querySelectorAll(".searchResultsTable");
+    const suggestionList = doc.querySelectorAll("ul.suggestion-list li");
 
-      if (suggestionList.length > 0 && checkSearchResults.length === 0) {
-        contentEl.appendChild(suggestedQueries(str, suggestionList));
-        document.getElementById("voice-tts").style.display = "none";
-      }
+    const contentEl = document.getElementById("content");
 
-      if (checkSearchResults.length > 0) {
-        checkSearchResults.forEach((table) => {
-          const newTable = createTranslationTable(table);
-          contentEl.appendChild(newTable);
-        });
+    if (suggestionList.length > 0 && checkSearchResults.length === 0) {
+      contentEl.appendChild(suggestedQueries(str, suggestionList));
+      document.getElementById("voice-tts").style.display = "none";
+    } else if (checkSearchResults.length > 0) {
+      checkSearchResults.forEach((table) => {
+        const newTable = createTranslationTable(table);
+        contentEl.appendChild(newTable);
+      });
 
-        document.getElementById("voice-tts").style.display = "block";
-      }
-    })
-    .finally(() => {
-      document.getElementById("loading").style.display = "none";
-    });
+      document.getElementById("voice-tts").style.display = "block";
+    } else {
+      notFound(str);
+    }
+  })
+  .catch(() => {
+    notFound(str);
+  })
+  .finally(() => {
+    document.getElementById("loading").style.display = "none";
+  });
 }
 
 document.addEventListener("DOMContentLoaded", () => {

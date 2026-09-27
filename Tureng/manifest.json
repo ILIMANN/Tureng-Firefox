@@ -1,14 +1,14 @@
 {
   "author": "Kerim Demirel",
   "developer": {
-    "name": "Ali Emre Karatopuk",
-    "url": "https://www.linkedin.com/in/emrekaratopuk/"
+    "name": "Mehmet Efe İliman",
+    "url": "https://www.linkedin.com/in/efeiliman/"
   },
   "manifest_version": 3,
   "name": "Tureng Dictionary",
   "short_name": "Tureng",
   "description": "Tureng English-Turkish Online Dictionary",
-  "version": "7.1.1",
+  "version": "1.1.0",
   "action": {
     "default_icon": {
       "128": "images/AppIcon.png",
@@ -23,7 +23,12 @@
     "256": "images/AppIcon.png"
   },
   "permissions": ["activeTab", "contextMenus", "scripting"],
-  "host_permissions": ["https://translate.google.com/*"],
+  "host_permissions": [
+    "https://tureng.com/*",
+    "https://*.tureng.com/*",
+    "https://translate.google.com/*"
+  ],
+
   "background": {
     "scripts": ["scripts/background.js"]
   },
