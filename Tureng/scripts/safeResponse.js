@@ -1,51 +1,46 @@
-safeResponse = (function () {
-  let validAttrs = ["class", "id", "href", "style"];
+"use strict";
 
-  this.__removeInvalidAttributes = function (target) {
-    let attrs = target.attributes,
-      currentAttr;
+const safeResponse = (function () {
+  const validAttrs = ["class", "id", "href", "style"];
+  const parser = new DOMParser();
+
+  function removeInvalidAttributes(target) {
+    const attrs = target.attributes;
 
     for (let i = attrs.length - 1; i >= 0; i--) {
-      currentAttr = attrs[i].name;
+      const currentAttr = attrs[i].name;
 
-      if (attrs[i].specified && validAttrs.indexOf(currentAttr) === -1) {
+      if (attrs[i].specified && !validAttrs.includes(currentAttr)) {
         target.removeAttribute(currentAttr);
       }
 
       if (
         currentAttr === "href" &&
-        /^(#|javascript[:])/gi.test(target.getAttribute("href"))
+        /^(#|javascript[:])/i.test(target.getAttribute("href"))
       ) {
-        target.parentNode.removeChild(target);
+        target.parentNode?.removeChild(target);
+        break;
       }
     }
-  };
+  }
 
-  this.__cleanDomString = function (data) {
-    let parser = new DOMParser();
-    let tmpDom = parser.parseFromString(data, "text/html").body;
+  function cleanDomString(data) {
+    const tmpDom = parser.parseFromString(data, "text/html").body;
 
-    let list, current, currentHref;
-
-    list = tmpDom.querySelectorAll("script,img");
-
-    for (let i = list.length - 1; i >= 0; i--) {
-      current = list[i];
-      current.parentNode.removeChild(current);
+    const scriptsAndImages = tmpDom.querySelectorAll("script,img");
+    for (let i = scriptsAndImages.length - 1; i >= 0; i--) {
+      scriptsAndImages[i].remove();
     }
 
-    list = tmpDom.getElementsByTagName("*");
-
-    for (i = list.length - 1; i >= 0; i--) {
-      parent.__removeInvalidAttributes(list[i]);
+    const elements = tmpDom.getElementsByTagName("*");
+    for (let i = elements.length - 1; i >= 0; i--) {
+      removeInvalidAttributes(elements[i]);
     }
 
     return tmpDom.innerHTML;
-  };
+  }
 
   return {
-    cleanDomString: function (html) {
-      return parent.__cleanDomString(html);
-    },
+    cleanDomString,
   };
 })();

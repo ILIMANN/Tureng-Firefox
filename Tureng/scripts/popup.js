@@ -103,9 +103,9 @@ function createTranslationRow(translation) {
   // Word
   const tdWord = document.createElement("td");
   const wordLink = document.createElement("a");
-  wordLink.dataset.href = cleanAndDecode(translation.word);
-  console.log(cleanAndDecode(translation.word));
-  wordLink.textContent = cleanAndDecode(translation.word);
+  const cleanedWord = cleanAndDecode(translation.word);
+  wordLink.dataset.href = cleanedWord;
+  wordLink.textContent = cleanedWord;
   tdWord.appendChild(wordLink);
 
   if (translation.type) {
@@ -117,8 +117,9 @@ function createTranslationRow(translation) {
   // Definition
   const tdDef = document.createElement("td");
   const defLink = document.createElement("a");
-  defLink.dataset.href = cleanAndDecode(translation.definition);
-  defLink.textContent = cleanAndDecode(translation.definition);
+  const cleanedDef = cleanAndDecode(translation.definition);
+  defLink.dataset.href = cleanedDef;
+  defLink.textContent = cleanedDef;
   tdDef.appendChild(defLink);
 
   if (translation.definitionType) {
