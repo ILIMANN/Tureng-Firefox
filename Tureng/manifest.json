@@ -1,5 +1,5 @@
 {
-  "author": "Kerim Demirel",
+  "author": "Kerim Demirel, Ali Emre Karatopuk, Mehmet Efe İliman",
   "developer": {
     "name": "Mehmet Efe İliman",
     "url": "https://www.linkedin.com/in/efeiliman/"
@@ -48,7 +48,7 @@
   },
   "browser_specific_settings": {
     "gecko": {
-      "id": "{0bf0adac-400d-4051-8dd1-0e2ac7b46d98}"
+      "id": "tureng-dictionary@ilimann"
     }
   }
 }

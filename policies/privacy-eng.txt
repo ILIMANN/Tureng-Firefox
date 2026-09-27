@@ -1,6 +1,6 @@
-Last Updated: September 1, 2025.
+Last Updated: September 27, 2026.
 
-This browser extension provides Turkish–English translations and pronunciation using Tureng.com and Google Translate TTS. .
+This browser extension provides Turkish–English translations and pronunciation using Tureng.com and Google Translate TTS.
 
 The only data transmitted is the text you type in the search box. No other data, telemetry, or analytics is collected. Your typed search terms are not stored locally or remotely.
 
@@ -16,4 +16,4 @@ This extension does not use cookies or tracking of any kind. Any links (e.g., Go
 
 This extension uses locally bundled Bootstrap and Font Awesome dependencies for styling and icons.
 
-For privacy-related questions, please contact through https://github.com/EmreKaratopuk/Tureng-Firefox.
+For privacy-related questions, please contact through https://github.com/ILIMANN/Tureng-Firefox.
