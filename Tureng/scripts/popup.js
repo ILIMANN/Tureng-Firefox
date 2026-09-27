@@ -142,8 +142,8 @@ function createTranslationTable(tableElement) {
 
   newTable.appendChild(
     createTableHeader(
-      tableElement.querySelector("tr .c2").textContent,
-      tableElement.querySelector("tr .c3").textContent
+      tableElement.querySelector("tr .c2")?.textContent || "",
+      tableElement.querySelector("tr .c3")?.textContent || ""
     )
   );
 
@@ -267,16 +267,17 @@ function resetSearchUI(str) {
   document.getElementsByClassName("inner-shadow")[0].style.backgroundColor =
     "#BD1E2C";
 
-  document.querySelectorAll(".pie, .dot span").forEach((el) => {
-    el.style.backgroundColor =
-      "#" + (((1 << 24) * Math.random()) | 0).toString(16);
-  });
-
-  return str;
-}
-
+    document.querySelectorAll(".pie, .dot span").forEach((el) => {
+      el.style.backgroundColor =
+        "#" + (((1 << 24) * Math.random()) | 0).toString(16).padStart(6, "0");
+    });
+  
+    return str;
+  }
+  
 function tureng(str) {
-  str = resetSearchUI(str);
+  if (!str || !str.trim()) return;
+  str = resetSearchUI(str.trim());
 
   browser.runtime
   .sendMessage({ type: "TURENG_SEARCH", query: str })
@@ -362,8 +363,9 @@ window.onload = async () => {
     return; // ignoring an unsupported page like about:addons
   }
 
-  document.getElementById("search-input").value = result;
-  if (result.length > 0) {
+  const trimmedResult = result ? result.trim() : "";
+  document.getElementById("search-input").value = trimmedResult;
+  if (trimmedResult.length > 0) {
     document.getElementById("tureng").click();
   }
 };
