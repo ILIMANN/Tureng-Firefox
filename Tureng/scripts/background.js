@@ -12,10 +12,12 @@ function newTab(info, tab) {
 
 //Create context menu options.
 
-browser.contextMenus.create({
-  title: "Tureng: '%s' ",
-  id: "tureng-text-search",
-  contexts: ["selection"],
+browser.runtime.onInstalled.addListener(() => {
+  browser.contextMenus.create({
+    title: "Tureng: '%s' ",
+    id: "tureng-text-search",
+    contexts: ["selection"],
+  });
 });
 
 //This tells the context menu what function to run when the option is selected
